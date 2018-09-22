@@ -11,12 +11,24 @@ class MoviesController < ApplicationController
   end
 
   def index
+  #restore session
+    if(params[:sort] != nil )
+      session[:sort] = params[:sort]
+    else
+      params[:sort] = session[:sort]
+     end 
+    
+    if(params[:ratings] != nil)
+      session[:ratings] = params[:ratings]
+    else 
+      params[:ratings] = session[:ratings]
+    end
+ 
     if(params[:ratings] != nil)
       @movies = Movie.where(rating: params[:ratings].keys)
     else
       @movies = Movie.all
     end 
- 
     @sort = params[:sort]
     
     @all_ratings = Movie.possible_ratings
