@@ -40,7 +40,7 @@ class MoviesController < ApplicationController
     @movies = @movies.order params[:sort]
 
     if redirect
-      redirect_to movies_path(:sort => session[:sort])
+      redirect_to movies_path(:sort => session[:sort], :ratings => session[:ratings])
     end
 
 
