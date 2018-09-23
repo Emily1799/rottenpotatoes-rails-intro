@@ -12,19 +12,23 @@ class MoviesController < ApplicationController
 
   def index
   #restore session
-    if(params[:sort] != nil )
+  redirect = false
+  
+    if(params[:sort])
       session[:sort] = params[:sort]
-    else
+    elsif(session[:sort])
       params[:sort] = session[:sort]
-     end 
+      redirect = true
+    end 
     
-    if(params[:ratings] != nil)
+    if(params[:ratings])
       session[:ratings] = params[:ratings]
-    else 
+    elsif(session[:ratings])
       params[:ratings] = session[:ratings]
+      redirect = true
     end
  
-    if(params[:ratings] != nil)
+    if(params[:ratings])
       @movies = Movie.where(rating: params[:ratings].keys)
     else
       @movies = Movie.all
@@ -34,6 +38,10 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.possible_ratings
     
     @movies = @movies.order params[:sort]
+
+    if redirect
+      redirect_to movies_path(:sort => session[:sort])
+    end
 
 
   end
